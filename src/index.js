@@ -8,7 +8,7 @@ const Player = (props) => {
   const { data = [], index = -1 } = props;
   return (
     <div>
-      {index < 0 ? (
+      {index < 0 || data.length === 0 ? (
         <Item title="Untitled" subtitle="Unknown" />
       ) : (
         <Item title={data[index].song} subtitle={data[index].artist} />
@@ -115,6 +115,18 @@ class App extends React.Component {
     });
   };
 
+  remove = () => {
+    const { data, index } = this.state;
+    if (index > -1) {
+      this.setState((prevState) => {
+        const filtered = prevState.data.filter((el, i) => {
+          return i !== index;
+        });
+        return { data: filtered, index: -1 };
+      });
+    }
+  };
+
   render() {
     const { data, index } = this.state;
     return (
@@ -122,6 +134,7 @@ class App extends React.Component {
         <Player data={data} index={index} />
         <Controls prev={this.prev} shuffle={this.shuffle} next={this.next} />
         <List data={data} index={index} play={this.play} />
+        <button onClick={this.remove}>Remove</button>
       </>
     );
   }
