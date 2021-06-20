@@ -23,8 +23,16 @@ class App extends React.Component {
         artist: "KoRn"
       },
       {
+        song: "Rock and Roll All Nite",
+        artist: "KISS"
+      },
+      {
         song: "I Want It All",
         artist: "Queen"
+      },
+      {
+        song: "When Love And Hate Collide",
+        artist: "Def Leppard"
       }
     ],
     index: 0
@@ -37,12 +45,17 @@ class App extends React.Component {
     });
   };
 
+  prev = () => {
+    const { data } = this.state;
+    this.setState((prevState) => {
+      return {
+        index: prevState.index === 0 ? data.length - 1 : prevState.index - 1
+      };
+    });
+  };
+
   next = () => {
     const { data } = this.state;
-    /*
-      se usa la forma de setState que hace uso de prevState cuando se requiere 
-      actualizar el state basandose en un state anterior
-    */
     this.setState((prevState) => {
       return {
         index: prevState.index < data.length - 1 ? prevState.index + 1 : 0
@@ -56,8 +69,9 @@ class App extends React.Component {
       <>
         <Item title={data[index].song} subtitle={data[index].artist} />
         <br />
-        <button onClick={this.shuffle}>Shuffle</button>
+        <button onClick={this.prev}>Previous</button>
         <button onClick={this.next}>Next</button>
+        <button onClick={this.shuffle}>Shuffle</button>
       </>
     );
   }
