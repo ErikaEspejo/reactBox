@@ -35,7 +35,7 @@ class App extends React.Component {
         artist: "Def Leppard"
       }
     ],
-    index: 0
+    index: -1
   };
 
   shuffle = () => {
@@ -49,7 +49,7 @@ class App extends React.Component {
     const { data } = this.state;
     this.setState((prevState) => {
       return {
-        index: prevState.index === 0 ? data.length - 1 : prevState.index - 1
+        index: prevState.index <= 0 ? data.length - 1 : prevState.index - 1
       };
     });
   };
@@ -67,7 +67,11 @@ class App extends React.Component {
     const { data, index } = this.state;
     return (
       <>
-        <Item title={data[index].song} subtitle={data[index].artist} />
+        {index < 0 ? (
+          <Item title="Untitled" subtitle="Unknown" />
+        ) : (
+          <Item title={data[index].song} subtitle={data[index].artist} />
+        )}
         <br />
         <button onClick={this.prev}>Previous</button>
         <button onClick={this.next}>Next</button>
