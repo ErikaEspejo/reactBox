@@ -11,23 +11,42 @@ const Item = ({ title, subtitle }) => {
   );
 };
 
-const handleEvent = (event) => {
-  console.log(event);
-};
+class App extends React.Component {
+  state = {
+    data: [
+      {
+        song: "Smells Like Teen Spirit",
+        artist: "Nirvana"
+      },
+      {
+        song: "Blind",
+        artist: "KoRn"
+      },
+      {
+        song: "I Want It All",
+        artist: "Queen"
+      }
+    ],
+    index: 0
+  };
 
-const element = (
-  <>
-    <Item title="Smells Like Teen Spirit" subtitle={<strong>Nirvana</strong>} />
-    <br />
-    <Item title="Come As You Are" subtitle="Nirvana" />
-    <br />
-    <button onClick={handleEvent}>Shuffle</button>
-  </>
-);
+  handleEvent = (event) => {
+    const { data } = this.state;
+    this.setState({
+      index: Math.floor(Math.random() * data.length)
+    });
+  };
 
-/*
-  No se ponen parentesis para el handleEvent(), porque se requiere referenciar 
-  la funcion y no ejecutarla cada vez que se pinte, sino cuando se de click.
-*/
+  render() {
+    const { data, index } = this.state;
+    return (
+      <>
+        <Item title={data[index].song} subtitle={data[index].artist} />
+        <br />
+        <button onClick={this.handleEvent}>Shuffle</button>
+      </>
+    );
+  }
+}
 
-ReactDOM.render(element, root);
+ReactDOM.render(<App />, root);
