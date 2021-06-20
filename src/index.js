@@ -81,7 +81,8 @@ class App extends React.Component {
         artist: "Def Leppard"
       }
     ],
-    index: -1
+    index: -1,
+    showForm: false
   };
 
   shuffle = () => {
@@ -116,7 +117,7 @@ class App extends React.Component {
   };
 
   remove = () => {
-    const { data, index } = this.state;
+    const { index } = this.state;
     if (index > -1) {
       this.setState((prevState) => {
         const filtered = prevState.data.filter((el, i) => {
@@ -127,14 +128,34 @@ class App extends React.Component {
     }
   };
 
+  toogleForm = () => {
+    this.setState((prevState) => {
+      return {
+        showForm: !prevState.showForm
+      };
+    });
+  };
+
   render() {
-    const { data, index } = this.state;
+    const { data, index, showForm } = this.state;
     return (
       <>
         <Player data={data} index={index} />
         <Controls prev={this.prev} shuffle={this.shuffle} next={this.next} />
         <List data={data} index={index} play={this.play} />
-        <button onClick={this.remove}>Remove</button>
+        {showForm ? (
+          <form>
+            <input type="text" name="song" id="song" />
+            <input type="text" name="artist" id="artist" />
+            <button onClick={this.save}>Save</button>
+            <button onClick={this.toogleForm}>Cancel</button>
+          </form>
+        ) : (
+          <>
+            <button onClick={this.toogleForm}>Add</button>
+            <button onClick={this.remove}>Remove</button>
+          </>
+        )}
       </>
     );
   }
