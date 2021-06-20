@@ -76,6 +76,13 @@ class App extends React.Component {
         <button onClick={this.prev}>Previous</button>
         <button onClick={this.next}>Next</button>
         <button onClick={this.shuffle}>Shuffle</button>
+        <ul>
+          {data.map((item, i) => (
+            <li key={i}>
+              <Item title={item.song} subtitle={item.artist} />
+            </li>
+          ))}
+        </ul>
       </>
     );
   }
