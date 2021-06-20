@@ -3,30 +3,39 @@ import ReactDOM from "react-dom";
 
 const root = document.getElementById("app");
 
-const title = "Inevitable";
+const title = "Smell like teen spirit";
+const singer = "Nirvana";
 const props = {
   className: "container",
-  id: "song",
-  children: <p>Hola mundo</p>
+  id: "song"
 };
 
-const element = <div {...props} />;
+const element = (
+  <>
+    <div {...props}>
+      <p>
+        {title} - {singer}
+      </p>
+    </div>
+    <div {...props}>
+      <p>
+        {title} - {singer}
+      </p>
+    </div>
+  </>
+);
 
 /*
-Para poder usar JSX a diferentes niveles tipo HTML, se debe poner entre parentesis.
-Los props son elementos de React que se pasan como atributos HTML o de expresiones 
-y variables externas. Dentro de los atributos HTML se pueden pasar como:
-  <div className={props.className}> 
-    <p>Hola mundo</p>
-  </div>
+JSX solo retorna un elemento padre, para lo cual se puede usar
+  <React.Fragment>
+    ....
+  </React.Fragment>
 
-O tambien incluyendo todos los props mediante el spread operator:
-  <div {...props}> 
-      <p>Hola mundo</p>
-  </div>
-
-Tambien se pueden incluir los childrens dentro de los props y de esta manera
-la etiqueta puede ser self-closing. 
-  <div {...props} />
+  La manera reducida de la anterior etiqueta que no genera ningun div ni algo
+  por el estilo y solo sirve como encapsulador es:
+  <>
+    .....
+  </>
 */
+
 ReactDOM.render(element, root);
