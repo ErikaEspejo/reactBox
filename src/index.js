@@ -3,39 +3,23 @@ import ReactDOM from "react-dom";
 
 const root = document.getElementById("app");
 
-const title = "Smell like teen spirit";
-const singer = "Nirvana";
-const props = {
-  className: "container",
-  id: "song"
+const song1 = "Smells Like Teen Spirit";
+const song2 = "Come As You Are";
+
+const item = (title) => {
+  return <p>{title}</p>;
 };
 
 const element = (
   <>
-    <div {...props}>
-      <p>
-        {title} - {singer}
-      </p>
-    </div>
-    <div {...props}>
-      <p>
-        {title} - {singer}
-      </p>
-    </div>
+    {item(song1)}
+    {item(song2)}
   </>
 );
 
 /*
-JSX solo retorna un elemento padre, para lo cual se puede usar
-  <React.Fragment>
-    ....
-  </React.Fragment>
-
-  La manera reducida de la anterior etiqueta que no genera ningun div ni algo
-  por el estilo y solo sirve como encapsulador es:
-  <>
-    .....
-  </>
+  React Trabaja con componentes, lo anterior es un ejemplo muy basico
+  de como funcionaria uno por debajo.
 */
 
 ReactDOM.render(element, root);
