@@ -63,6 +63,11 @@ class App extends React.Component {
     });
   };
 
+  play = (event, currentIndex) => {
+    this.setState({
+      index: currentIndex
+    });
+  };
   render() {
     const { data, index } = this.state;
     return (
@@ -79,6 +84,13 @@ class App extends React.Component {
         <ul>
           {data.map((item, i) => (
             <li key={i}>
+              <button
+                onClick={(event) => {
+                  this.play(event, i);
+                }}
+              >
+                Play
+              </button>{" "}
               <Item title={item.song} subtitle={item.artist} />
             </li>
           ))}
