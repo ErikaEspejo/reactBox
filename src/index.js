@@ -4,6 +4,51 @@ import "./styles.css";
 
 const root = document.getElementById("app");
 
+const Player = (props) => {
+  const { data = [], index = -1 } = props;
+  return (
+    <div>
+      {index < 0 ? (
+        <Item title="Untitled" subtitle="Unknown" />
+      ) : (
+        <Item title={data[index].song} subtitle={data[index].artist} />
+      )}
+    </div>
+  );
+};
+
+const Controls = (props) => {
+  const { prev, next, shuffle } = props;
+  return (
+    <div>
+      <button onClick={prev}>Previous</button>
+      <button onClick={next}>Next</button>
+      <button onClick={shuffle}>Shuffle</button>
+    </div>
+  );
+};
+
+const List = (props) => {
+  const { data = [], index = -1, play } = props;
+  return (
+    <div>
+      <ul>
+        {data.map((item, i) => (
+          <li
+            key={i}
+            onDoubleClick={(event) => {
+              play(event, i);
+            }}
+            className={index === i ? "selected" : ""}
+          >
+            <Item title={item.song} subtitle={item.artist} />
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
 const Item = ({ title, subtitle }) => {
   return (
     <span>
@@ -74,28 +119,9 @@ class App extends React.Component {
     const { data, index } = this.state;
     return (
       <>
-        {index < 0 ? (
-          <Item title="Untitled" subtitle="Unknown" />
-        ) : (
-          <Item title={data[index].song} subtitle={data[index].artist} />
-        )}
-        <br />
-        <button onClick={this.prev}>Previous</button>
-        <button onClick={this.next}>Next</button>
-        <button onClick={this.shuffle}>Shuffle</button>
-        <ul>
-          {data.map((item, i) => (
-            <li
-              key={i}
-              onDoubleClick={(event) => {
-                this.play(event, i);
-              }}
-              className={index === i ? "selected" : ""}
-            >
-              <Item title={item.song} subtitle={item.artist} />
-            </li>
-          ))}
-        </ul>
+        <Player data={data} index={index} />
+        <Controls prev={this.prev} shuffle={this.shuffle} next={this.next} />
+        <List data={data} index={index} play={this.play} />
       </>
     );
   }

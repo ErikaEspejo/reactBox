@@ -3,6 +3,6 @@ body {
 }
 
 .selected {
-  color: blue;
-  text-decoration: underline;
+  color: orange;
+  font-weight: bold;
 }
