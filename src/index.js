@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import "./styles.css";
 
 const root = document.getElementById("app");
 
@@ -68,6 +69,7 @@ class App extends React.Component {
       index: currentIndex
     });
   };
+
   render() {
     const { data, index } = this.state;
     return (
@@ -83,14 +85,13 @@ class App extends React.Component {
         <button onClick={this.shuffle}>Shuffle</button>
         <ul>
           {data.map((item, i) => (
-            <li key={i}>
-              <button
-                onClick={(event) => {
-                  this.play(event, i);
-                }}
-              >
-                Play
-              </button>{" "}
+            <li
+              key={i}
+              onDoubleClick={(event) => {
+                this.play(event, i);
+              }}
+              className={index === i ? "selected" : ""}
+            >
               <Item title={item.song} subtitle={item.artist} />
             </li>
           ))}
