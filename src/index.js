@@ -24,14 +24,19 @@ const element = (
 
 //Esta es una manera correcta de hacerlo y de mejor entendimiento
 
-const Item = ({ title }) => {
+const Item = ({ title, children }) => {
+  //trae los children de Item, es decir lo que esta dentro de las etiquetas y renderiza lo que aparece en el componente
   //trae de los props de Item el title
-  return <p>{title}</p>;
+  return (
+    <p>
+      {title} - {children}
+    </p>
+  );
 };
 
 const element = (
   <>
-    <Item title="Smells Like Teen Spirit" />
+    <Item title="Smells Like Teen Spirit">Nirvana</Item>
     <Item title="Come As You Are" />
   </>
 );
