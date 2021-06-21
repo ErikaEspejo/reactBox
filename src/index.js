@@ -36,7 +36,7 @@ const List = (props) => {
         {data.map((item, i) => (
           <li
             key={i}
-            onDoubleClick={(event) => {
+            onClick={(event) => {
               play(event, i);
             }}
             className={index === i ? "selected" : ""}
@@ -58,6 +58,12 @@ const Item = ({ title, subtitle }) => {
 };
 
 class App extends React.Component {
+  constructor(args) {
+    super(args);
+    this.song = null;
+    this.artist = null;
+  }
+
   state = {
     data: [
       {
@@ -136,6 +142,27 @@ class App extends React.Component {
     });
   };
 
+  add = (event) => {
+    event.preventDefault();
+    const { song, artist } = event.target.elements;
+    this.setState(
+      (prevState) => {
+        return {
+          data: [
+            ...prevState.data,
+            {
+              song: this.song.value,
+              artist: this.artist.value
+            }
+          ]
+        };
+      },
+      () => {
+        this.toogleForm();
+      }
+    );
+  };
+
   render() {
     const { data, index, showForm } = this.state;
     return (
@@ -144,10 +171,14 @@ class App extends React.Component {
         <Controls prev={this.prev} shuffle={this.shuffle} next={this.next} />
         <List data={data} index={index} play={this.play} />
         {showForm ? (
-          <form>
-            <input type="text" name="song" id="song" />
-            <input type="text" name="artist" id="artist" />
-            <button onClick={this.save}>Save</button>
+          <form onSubmit={this.add}>
+            <input type="text" name="song" ref={(node) => (this.song = node)} />
+            <input
+              type="text"
+              name="artist"
+              ref={(node) => (this.artist = node)}
+            />
+            <button type="submit">Save</button>
             <button onClick={this.toogleForm}>Cancel</button>
           </form>
         ) : (
