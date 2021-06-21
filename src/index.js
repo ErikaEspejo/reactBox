@@ -88,7 +88,8 @@ class App extends React.Component {
       }
     ],
     index: -1,
-    showForm: false
+    showForm: false,
+    error: ""
   };
 
   shuffle = () => {
@@ -144,16 +145,27 @@ class App extends React.Component {
 
   add = (event) => {
     event.preventDefault();
+    const song = this.song.current.value;
+    const artist = this.artist.current.value;
+
+    if (!song && !artist) {
+      this.setState({
+        error: "Song and artist field required"
+      });
+      return;
+    }
+
     this.setState(
       (prevState) => {
         return {
           data: [
             ...prevState.data,
             {
-              song: this.song.current.value,
-              artist: this.artist.current.value
+              song,
+              artist
             }
-          ]
+          ],
+          error: ""
         };
       },
       () => {
@@ -163,7 +175,7 @@ class App extends React.Component {
   };
 
   render() {
-    const { data, index, showForm } = this.state;
+    const { data, index, showForm, error } = this.state;
     return (
       <>
         <Player data={data} index={index} />
@@ -182,6 +194,7 @@ class App extends React.Component {
             <button onClick={this.remove}>Remove</button>
           </>
         )}
+        {error && <p style={{ color: "red" }}>{error}</p>}
       </>
     );
   }
