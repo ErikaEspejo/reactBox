@@ -60,8 +60,8 @@ const Item = ({ title, subtitle }) => {
 class App extends React.Component {
   constructor(args) {
     super(args);
-    this.song = null;
-    this.artist = null;
+    this.song = React.createRef();
+    this.artist = React.createRef();
   }
 
   state = {
@@ -144,15 +144,14 @@ class App extends React.Component {
 
   add = (event) => {
     event.preventDefault();
-    const { song, artist } = event.target.elements;
     this.setState(
       (prevState) => {
         return {
           data: [
             ...prevState.data,
             {
-              song: this.song.value,
-              artist: this.artist.value
+              song: this.song.current.value,
+              artist: this.artist.current.value
             }
           ]
         };
@@ -172,12 +171,8 @@ class App extends React.Component {
         <List data={data} index={index} play={this.play} />
         {showForm ? (
           <form onSubmit={this.add}>
-            <input type="text" name="song" ref={(node) => (this.song = node)} />
-            <input
-              type="text"
-              name="artist"
-              ref={(node) => (this.artist = node)}
-            />
+            <input type="text" name="song" ref={this.song} />
+            <input type="text" name="artist" ref={this.artist} />
             <button type="submit">Save</button>
             <button onClick={this.toogleForm}>Cancel</button>
           </form>
