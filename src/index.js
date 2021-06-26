@@ -2,6 +2,8 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./styles.css";
 
+import { FormContainer } from "./form";
+
 const root = document.getElementById("app");
 
 const Player = (props) => {
@@ -58,39 +60,42 @@ const Item = ({ title, subtitle }) => {
 };
 
 class App extends React.Component {
-  constructor(args) {
-    super(args);
-    this.song = React.createRef();
-    this.artist = React.createRef();
-  }
+  constructor(props) {
+    super(props);
+    /* El constructor se puede usar para:
+     - Acceder a los props
+     - Declarar variables 
+     - Calcular el estado de acuerdo a las props
 
-  state = {
-    data: [
-      {
-        song: "Smells Like Teen Spirit",
-        artist: "Nirvana"
-      },
-      {
-        song: "Blind",
-        artist: "KoRn"
-      },
-      {
-        song: "Rock and Roll All Nite",
-        artist: "KISS"
-      },
-      {
-        song: "I Want It All",
-        artist: "Queen"
-      },
-      {
-        song: "When Love And Hate Collide",
-        artist: "Def Leppard"
-      }
-    ],
-    index: -1,
-    showForm: false,
-    error: ""
-  };
+     NO HACER LLAMADOS AJAX NI SETSTATE
+     */
+    const index = props.index >= 0 ? props.index : -1;
+    this.state = {
+      data: [
+        {
+          song: "Smells Like Teen Spirit",
+          artist: "Nirvana"
+        },
+        {
+          song: "Blind",
+          artist: "KoRn"
+        },
+        {
+          song: "Rock and Roll All Nite",
+          artist: "KISS"
+        },
+        {
+          song: "I Want It All",
+          artist: "Queen"
+        },
+        {
+          song: "When Love And Hate Collide",
+          artist: "Def Leppard"
+        }
+      ],
+      index
+    };
+  }
 
   shuffle = () => {
     const { data } = this.state;
@@ -135,69 +140,32 @@ class App extends React.Component {
     }
   };
 
-  toogleForm = () => {
+  add = ({ song, artist }) => {
     this.setState((prevState) => {
       return {
-        showForm: !prevState.showForm
+        data: [
+          ...prevState.data,
+          {
+            song: song.value,
+            artist: artist.value
+          }
+        ],
+        error: ""
       };
     });
   };
 
-  add = (event) => {
-    event.preventDefault();
-    const song = this.song.current.value;
-    const artist = this.artist.current.value;
-
-    if (!song && !artist) {
-      this.setState({
-        error: "Song and artist field required"
-      });
-      return;
-    }
-
-    this.setState(
-      (prevState) => {
-        return {
-          data: [
-            ...prevState.data,
-            {
-              song,
-              artist
-            }
-          ],
-          error: ""
-        };
-      },
-      () => {
-        this.toogleForm();
-      }
-    );
-  };
-
   render() {
-    const { data, index, showForm, error } = this.state;
+    const { data, index } = this.state;
     return (
       <>
         <Player data={data} index={index} />
         <Controls prev={this.prev} shuffle={this.shuffle} next={this.next} />
         <List data={data} index={index} play={this.play} />
-        {showForm ? (
-          <form onSubmit={this.add}>
-            <input type="text" name="song" ref={this.song} />
-            <input type="text" name="artist" ref={this.artist} />
-            <button type="submit">Save</button>
-            <button onClick={this.toogleForm}>Cancel</button>
-          </form>
-        ) : (
-          <>
-            <button onClick={this.toogleForm}>Add</button>
-            <button onClick={this.remove}>Remove</button>
-          </>
-        )}
-        {error && <p style={{ color: "red" }}>{error}</p>}
+        <FormContainer add={this.add} remove={this.remove} />
       </>
     );
   }
 }
 
-ReactDOM.render(<App />, root);
+ReactDOM.render(<App index={0} />, root);
