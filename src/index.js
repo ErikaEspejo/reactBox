@@ -9,7 +9,7 @@ const root = document.getElementById("app");
 const Player = (props) => {
   const { data = [], index = -1 } = props;
   return (
-    <div>
+    <div className="current-play b-black g-color">
       {index < 0 || data.length === 0 ? (
         <Item title="Untitled" subtitle="Unknown" />
       ) : (
@@ -22,9 +22,16 @@ const Player = (props) => {
 const Controls = (props) => {
   const { prev, next, shuffle } = props;
   return (
-    <div>
-      <button onClick={prev}>Previous</button>
-      <button onClick={next}>Next</button>
+    <div className="control">
+      <button onClick={prev}>
+        <i className="fas fa-backward"></i>
+      </button>
+      <button onClick={prev}>
+        <i className="fas fa-play"></i>
+      </button>
+      <button onClick={next}>
+        <i className="fa fa-forward"></i>
+      </button>
       <button onClick={shuffle}>Shuffle</button>
     </div>
   );
@@ -33,7 +40,7 @@ const Controls = (props) => {
 const List = (props) => {
   const { data = [], index = -1, play } = props;
   return (
-    <div>
+    <div className="list b-black">
       <ul>
         {data.map((item, i) => (
           <li
@@ -41,7 +48,7 @@ const List = (props) => {
             onClick={(event) => {
               play(event, i);
             }}
-            className={index === i ? "selected" : ""}
+            className={index === i ? "playing" : ""}
           >
             <Item title={item.song} subtitle={item.artist} />
           </li>
@@ -156,13 +163,34 @@ class App extends React.Component {
   };
 
   render() {
+    //No se hace SetState ni llamados AJAX
     const { data, index } = this.state;
     return (
       <>
-        <Player data={data} index={index} />
-        <Controls prev={this.prev} shuffle={this.shuffle} next={this.next} />
-        <List data={data} index={index} play={this.play} />
-        <FormContainer add={this.add} remove={this.remove} />
+        <div className="main-ui player">
+          <header>
+            <div className="line" />
+            <h1>ReactBox</h1>
+          </header>
+          <div className="inner">
+            <Player data={data} index={index} />
+            <Controls
+              prev={this.prev}
+              shuffle={this.shuffle}
+              next={this.next}
+            />
+          </div>
+        </div>
+        <div className="main-ui list">
+          <header>
+            <div className="line" />
+            <h1>ReactBox</h1>
+          </header>
+          <div className="inner">
+            <List data={data} index={index} play={this.play} />
+            <FormContainer add={this.add} remove={this.remove} />
+          </div>
+        </div>
       </>
     );
   }

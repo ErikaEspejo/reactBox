@@ -34,17 +34,17 @@ export class FormContainer extends React.Component {
     return (
       <>
         {showForm ? (
-          <form onSubmit={this.handleSave}>
+          <form onSubmit={this.handleSave} className="control">
             <input type="text" name="song" />
             <input type="text" name="artist" />
             <button type="submit">Save</button>
             <button onClick={this.toogleForm}>Cancel</button>
           </form>
         ) : (
-          <>
+          <div className="control">
             <button onClick={this.toogleForm}>Add</button>
             <button onClick={this.props.remove}>Remove</button>
-          </>
+          </div>
         )}
         {error && <p style={{ color: "red" }}>{error}</p>}
       </>
