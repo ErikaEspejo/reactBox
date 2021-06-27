@@ -1,53 +1,42 @@
-import React from "react";
+import React, { useState } from "react";
 
-export class FormContainer extends React.Component {
-  state = {
-    showForm: false,
-    error: ""
+export const Form = ({ add, remove }) => {
+  const [showForm, setShowForm] = useState(false);
+  const [error, setError] = useState("");
+
+  const toogleForm = () => {
+    setShowForm((prevShowForm) => !prevShowForm);
+    setError("");
   };
 
-  toogleForm = () => {
-    this.setState((prevState) => {
-      return {
-        showForm: !prevState.showForm,
-        error: ""
-      };
-    });
-  };
-
-  handleSave = (event) => {
+  const handleSave = (event) => {
     event.preventDefault();
     const { song, artist } = event.target.elements;
 
     if (!song.value || !artist.value) {
-      this.setState({
-        error: "Song and artist field required"
-      });
+      setError("Song and artist field required");
       return;
     }
-
-    this.props.add({ song, artist });
+    add({ song: song.value, artist: artist.value });
+    toogleForm();
   };
 
-  render() {
-    const { showForm, error } = this.state;
-    return (
-      <>
-        {showForm ? (
-          <form onSubmit={this.handleSave} className="control">
-            <input type="text" name="song" />
-            <input type="text" name="artist" />
-            <button type="submit">Save</button>
-            <button onClick={this.toogleForm}>Cancel</button>
-          </form>
-        ) : (
-          <div className="control">
-            <button onClick={this.toogleForm}>Add</button>
-            <button onClick={this.props.remove}>Remove</button>
-          </div>
-        )}
-        {error && <p style={{ color: "red" }}>{error}</p>}
-      </>
-    );
-  }
-}
+  return (
+    <>
+      {showForm ? (
+        <form onSubmit={handleSave} className="control">
+          <input type="text" name="song" />
+          <input type="text" name="artist" />
+          <button type="submit">Save</button>
+          <button onClick={toogleForm}>Cancel</button>
+        </form>
+      ) : (
+        <div className="control">
+          <button onClick={toogleForm}>Add</button>
+          <button onClick={remove}>Remove</button>
+        </div>
+      )}
+      {error && <p style={{ color: "red" }}>{error}</p>}
+    </>
+  );
+};

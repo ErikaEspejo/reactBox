@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./styles.css";
 
-import { FormContainer } from "./form";
+import { Form } from "./form";
 
 const root = document.getElementById("app");
 
@@ -26,13 +26,15 @@ const Controls = (props) => {
       <button onClick={prev}>
         <i className="fas fa-backward"></i>
       </button>
-      <button onClick={prev}>
+      <button>
         <i className="fas fa-play"></i>
       </button>
       <button onClick={next}>
         <i className="fa fa-forward"></i>
       </button>
-      <button onClick={shuffle}>Shuffle</button>
+      <button onClick={shuffle}>
+        <i className="fas fa-random"></i>
+      </button>
     </div>
   );
 };
@@ -158,8 +160,8 @@ class App extends React.Component {
         data: [
           ...prevState.data,
           {
-            song: song.value,
-            artist: artist.value
+            song,
+            artist
           }
         ],
         error: ""
@@ -177,7 +179,7 @@ class App extends React.Component {
         </Panel>
         <Panel title="List" wrapperClass="list">
           <List data={data} index={index} play={this.play} />
-          <FormContainer add={this.add} remove={this.remove} />
+          <Form add={this.add} remove={this.remove} />
         </Panel>
       </>
     );
