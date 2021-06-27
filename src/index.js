@@ -66,16 +66,21 @@ const Item = ({ title, subtitle }) => {
   );
 };
 
+const Panel = ({ children, title, wrapperClass }) => {
+  return (
+    <div className={`main-ui ${wrapperClass}`}>
+      <header>
+        <div className="line" />
+        <h1>{title}</h1>
+      </header>
+      <div className="inner">{children}</div>
+    </div>
+  );
+};
+
 class App extends React.Component {
   constructor(props) {
     super(props);
-    /* El constructor se puede usar para:
-     - Acceder a los props
-     - Declarar variables 
-     - Calcular el estado de acuerdo a las props
-
-     NO HACER LLAMADOS AJAX NI SETSTATE
-     */
     const index = props.index >= 0 ? props.index : -1;
     this.state = {
       data: [
@@ -163,34 +168,17 @@ class App extends React.Component {
   };
 
   render() {
-    //No se hace SetState ni llamados AJAX
     const { data, index } = this.state;
     return (
       <>
-        <div className="main-ui player">
-          <header>
-            <div className="line" />
-            <h1>ReactBox</h1>
-          </header>
-          <div className="inner">
-            <Player data={data} index={index} />
-            <Controls
-              prev={this.prev}
-              shuffle={this.shuffle}
-              next={this.next}
-            />
-          </div>
-        </div>
-        <div className="main-ui list">
-          <header>
-            <div className="line" />
-            <h1>ReactBox</h1>
-          </header>
-          <div className="inner">
-            <List data={data} index={index} play={this.play} />
-            <FormContainer add={this.add} remove={this.remove} />
-          </div>
-        </div>
+        <Panel title="ReactBox" wrapperClass="player">
+          <Player data={data} index={index} />
+          <Controls prev={this.prev} shuffle={this.shuffle} next={this.next} />
+        </Panel>
+        <Panel title="List" wrapperClass="list">
+          <List data={data} index={index} play={this.play} />
+          <FormContainer add={this.add} remove={this.remove} />
+        </Panel>
       </>
     );
   }
